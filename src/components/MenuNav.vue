@@ -26,7 +26,7 @@
   z-index: 1;
 
   > .menu-logo {
-    background: url("../assets/imgs/SSWAP-default-logo.png");
+    background: url("../assets/imgs/SSWAP-logo-2.jpeg");
     background-size: cover;
     background-repeat: no-repeat;
     height: 3rem;

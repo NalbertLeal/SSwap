@@ -3,14 +3,11 @@
     .login-box
       h2 Iniciar sessão
       form
-        .user-email(v-if="email.length > 0")
-          p email: 
-          p#email-value
-        input(id="email-password-input" :placeholder="plaeholder" type="email" maxlength="50")
+        input(id="email-password-input" :placeholder="plaeholder" type="text" maxlength="50")
         .create-account
           p não possui conta? 
           router-link(class="create-account-link" to="/new-account") Crie uma
-        Buttom(classes="buttom-submit" value="ENTRAR" :clickEvent="validateAndOpenPassword")
+        Buttom(classes="buttom-submit" value="ENTRAR")
       img
 </template>
 
@@ -48,34 +45,16 @@
       height: 8rem;
       justify-content: space-around;
 
-      > .user-email {
-        display: flex;
-        margin-bottom: 0.5rem;
-
-        > p {
-          color: #fff;
-          margin: 0rem;
-        }
-
-        > #email-value {
-          margin-left: 0.5rem;
-        }
-      }
-
       > #email-password-input {
-        border: none;
         border-radius: 0.5rem;
         font-size: 1.1rem;
         height: 1.8rem;
-        // margin-bottom: 1rem;
-        margin-bottom: 0.5rem;
         padding: 0rem 0.5rem;
         outline: none;
       }
 
       > .create-account {
         display: flex;
-        margin-bottom: 1rem;
 
         > p {
           margin: 0rem;
@@ -94,6 +73,7 @@
       }
 
       > .buttom-submit {
+        // align-self: flex-end;
         height: 1.5rem;
         padding: 0.2rem 1rem;
         width: auto;
@@ -132,19 +112,6 @@ export default {
     }
   },
   methods: {
-    validateAndOpenPassword() {
-      let inputElement = document.getElementById("email-password-input"),
-        emailValue = document.getElementById("email-value")
-
-      if(inputElement.value) {
-        this.email = inputElement.value
-        emailValue.textContent = inputElement.value
-
-        inputElement.placeholder = "password"
-        inputElement.type = "password"
-        inputElement.value = ""
-      }
-    },
     clickSubmit() {
       if(this.email !== "" || this.password === "") {
 
