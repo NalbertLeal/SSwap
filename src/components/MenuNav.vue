@@ -1,6 +1,6 @@
 <template lang="pug">
   #menu-nav-top
-    img(class="menu-logo")
+    img(class="menu-logo" src="../assets/imgs/SSWAP-branco-sem-slog.png")
     SearchInput(class="nav-search-input" v-if="showSearchInput")
     //- router-link(class="signin-signup" to="/login") SIGNIN/SIGNUP 
     Buttom(:classes="'botao-signin-signup'" value="LOGIN / SIGN UP" :clickEvent="openLoginScreen")
@@ -26,10 +26,10 @@
   z-index: 1;
 
   > .menu-logo {
-    background: url("../assets/imgs/SSWAP-logo-2.jpeg");
+    // background: url("../assets/imgs/SSWAP-branco-sem-slog.png") 100%;
     background-size: cover;
     background-repeat: no-repeat;
-    height: 3rem;
+    height: auto;
     width: 8rem;
   }
 

@@ -20,7 +20,8 @@
 
   &:hover {
     background: #fff;
-    box-shadow: 0.3rem 0.3rem 0.3rem #000;
+    // box-shadow: 0.3rem 0.3rem 0.3rem #000;
+          box-shadow: 0rem 0rem 0.5rem #000;
     color: $color-orange;
   }
 

@@ -1,17 +1,27 @@
 <template lang="pug">
   #login
     .login-box
-      h2 Iniciar sessão
-      form
-        .user-email(v-if="email.length > 0")
-          p email: 
-          p#email-value
-        input(id="email-password-input" :placeholder="plaeholder" type="email" maxlength="50")
-        .create-account
-          p não possui conta? 
-          router-link(class="create-account-link" to="/new-account") Crie uma
-        Buttom(classes="buttom-submit" value="ENTRAR" :clickEvent="validateAndOpenPassword")
-      img
+      .login
+        h2 LOGIN
+        input(id="email-login" placeholder="email" type="email" maxlength="50")
+        .password.password-login
+          input(id="password-login" placeholder="senha" :type="passwordLoginType" maxlength="50")
+          font-awesome-icon(class='icon-eye' :icon=['fas', 'eye']  @click="showLoginPassword")
+        p.login-fail-mesage(v-if="$store.state.loggingFail") Erro no campo de email ou senha
+        Buttom(classes="buttom-login" value="ENTRAR" :clickEvent="loginUser")
+      .vertical-line
+        .line
+      .singup
+        h2 SIGN UP
+        input(id="email-signup" placeholder="email" type="email" maxlength="50")
+        .password.password-signup
+          input(id="password-signup-input" placeholder="senha" :type="passwordSignupType" maxlength="50")
+          font-awesome-icon(class='icon-eye' :icon=['fas', 'eye'] @click="showSignupPassword")
+        .password.password-confirmation
+          input(id="password-confirmation-signup-input" placeholder="corfirmação de senha" :type="passwordSignupType" maxlength="50")
+          font-awesome-icon(class='icon-eye' :icon=['fas', 'eye'] @click="showSignupPassword")
+        p.signup-fail-mesage(v-if="$store.state.signupFail") Erro no campo de email ou senha
+        Buttom(classes="buttom-signup" value="ENTRAR" :clickEvent="signupUser")
 </template>
 
 <style lang="scss" scoped>
@@ -20,7 +30,7 @@
 #login {
   align-items: center;
   // background: $color-purple;
-  background: $color-purple;
+  background: #fff;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 5.8rem);
@@ -31,84 +41,119 @@
     background: $color-purple-light;
     box-shadow: 0px 0px 10px #000;
     box-sizing: border-box;
-    height: 15rem;
+    display: flex;
+    height: 20rem;
     padding: 0px 3rem;
     position: relative;
-    width: 32rem;
+    width: 45rem;
 
-    > h2 {
-      color: #fff;
-      text-align: start;
+    input {
+      background: #fff;
+      border: none;
+      box-sizing: border-box;
+      font-size: 1.2rem;
+      height: 2.5rem;
+      margin-bottom: 1rem;
+      padding: 0.3rem;
+      width: 15rem;
     }
 
-    > form {
-      align-items: flex-start;
+    .password {
+      position: relative;
+      width: 15rem;
+
+      > input {
+        margin-bottom: 1rem;
+      }
+
+      > .icon-eye {
+        color: $color-green;
+        position: absolute;
+        top: 0.8rem;
+        right: 0.3rem;
+
+        &:hover {
+          color: $color-orange;
+          cursor: pointer;
+        }
+      }
+    }
+
+    > .login {
+      align-items: center;
       display: flex;
       flex-direction: column;
-      height: 8rem;
-      justify-content: space-around;
-
-      > .user-email {
-        display: flex;
-        margin-bottom: 0.5rem;
-
-        > p {
-          color: #fff;
-          margin: 0rem;
-        }
-
-        > #email-value {
-          margin-left: 0.5rem;
-        }
+      height: 100%;
+      width: 20rem;
+    
+      > h2 {
+        color: #fff;
+        text-align: center;
       }
 
-      > #email-password-input {
-        border: none;
-        border-radius: 0.5rem;
-        font-size: 1.1rem;
-        height: 1.8rem;
-        // margin-bottom: 1rem;
-        margin-bottom: 0.5rem;
-        padding: 0rem 0.5rem;
-        outline: none;
+      > input {
+
       }
 
-      > .create-account {
-        display: flex;
-        margin-bottom: 1rem;
+      > .password {
 
-        > p {
-          margin: 0rem;
-          margin-right: 1rem;
-        }
-
-        > a {
-          color: #fff;
-          cursor: pointer;
-          text-decoration: none;
-
-          &:hover {
-            color: $color-orange;
-          }
-        }
       }
 
-      > .buttom-submit {
-        height: 1.5rem;
-        padding: 0.2rem 1rem;
-        width: auto;
+      > .login-fail-mesage {
+        color: #fff;
+        margin-top: 0px;
+      }
+
+      > .buttom {
+        width: 13.5rem;
       }
     }
 
-    > img {
-      background: url("../assets/imgs/SSWAP-default-logo.png");
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 7rem;
-      position: absolute;    
-      right: 3rem;
-      top: 4rem;
-      width: 7rem;
+    > .vertical-line {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width: 3rem;
+
+      .line {
+        border-left: 0.04rem solid #fff;
+        height: 90%;
+        width: 1rem;
+      }
+    }
+
+    > .singup {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      width: 20rem;
+
+      > h2 {
+        color: #fff;
+        text-align: center;
+      }
+
+      > input {
+        margin-bottom: 1rem;
+      }
+
+      > .password-signup {
+
+      }
+
+      > .password-confirmation {
+
+      }
+
+      > .signup-fail-mesage {
+        color: #fff;
+        margin-top: 0px;
+      }
+
+      > .buttom {
+        width: 13.5rem;
+      }
     }
   }
 }
@@ -119,6 +164,9 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Buttom from '../components/Buttom';
 
+import login from '../scripts/api/login.js'
+import signup from '../scripts/api/signup.js'
+
 export default {
   name: 'login',
   components: {
@@ -126,28 +174,62 @@ export default {
   },
   data() {
     return {
-      email: "",
-      password: "",
-      placeholder: "email",
+      passwordLoginType: "password",
+      passwordSignupType: "password"
     }
   },
   methods: {
-    validateAndOpenPassword() {
-      let inputElement = document.getElementById("email-password-input"),
-        emailValue = document.getElementById("email-value")
+    showLoginPassword() {
+      this.passwordLoginType === "text" ? 
+        this.passwordLoginType = "password" : 
+        this.passwordLoginType = "text"
+    },
+    showSignupPassword() {
+      this.passwordSignupType === "text" ? 
+        this.passwordSignupType = "password" : 
+        this.passwordSignupType = "text"
+    },
+    async loginUser() {
+      let email = document.getElementById("email-login").value,
+        password = document.getElementById("password-login").value;
+        // regexEmail = /^[a-zA-Z\_\.]+\@[a-zA-Z]+\.[a-zA-Z\_\.]+/g;
 
-      if(inputElement.value) {
-        this.email = inputElement.value
-        emailValue.textContent = inputElement.value
-
-        inputElement.placeholder = "password"
-        inputElement.type = "password"
-        inputElement.value = ""
+      if((email === "" || !this.$store.state.regexEmail.exec(email)) 
+        || (password === "" || this.$store.state.regexNotSqlInjection.exec(password))) 
+      {
+        this.$store.commit("logginFailed")
+        return
+      }
+      let response;
+      try {
+        response = await login(email, password)
+        this.$store.commit("logginFailed", response.data.token)
+        this.$store.commit("logginSuccess")
+        this.$router.push({name: 'profile'})
+      }
+      catch(err) {
+        this.$store.commit("logginFailed")
       }
     },
-    clickSubmit() {
-      if(this.email !== "" || this.password === "") {
+    async signupUser() {
+      let email = document.getElementById("email-signup").value,
+        password = document.getElementById("password-signup-input").value,
+        passwordConfirmation = document.getElementById("password-confirmation-signup-input").value;
 
+      if(email === "" || !this.$store.state.regexEmail.exec(email)) {
+        this.$store.commit("signupFailed")
+        return 
+      }
+      if(this.$store.state.regexNotSqlInjection.exec(password) || (password === "" || passwordConfirmation === "")) {
+        this.$store.commit("signupFailed")
+        return
+      }
+
+      try {
+        let response = await signup(email, password)
+      }
+      catch(err) {
+        this.$store.commit("signupFailed")
       }
     }
   }
