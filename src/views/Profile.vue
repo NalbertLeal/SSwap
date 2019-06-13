@@ -133,6 +133,8 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Buttom from '../components/Buttom';
 
+import cache from '../scripts/cache'
+
 export default {
   name: 'login',
   components: {
@@ -140,6 +142,8 @@ export default {
   },
   data() {
     return {
+      email: "",
+      phone: "",
       offers: [{image: "https://img1.icarros.com/dbimg/imgnoticia/4/26086_1", title: "camaro laranja"},
         {image: "https://abrilquatrorodas.files.wordpress.com/2018/11/p90331098_highres_bmw-vision-inext-11-e1543429340433.jpg?quality=70&strip=info&strip=info", title: "carro futuristico"},
         {image: "https://fotos.jornaldocarro.estadao.com.br/uploads/2019/03/17092648/Novo-Prisma-e-Onix-2020-01-1160x724.jpg", title: "seminovo"},
@@ -162,7 +166,7 @@ export default {
     }
   },
   async created() {
-    if(!this.$store.state.loggedIn || !this.$store.state.loginToken === "") {
+    if(this.$store.state.loggingFail || this.$store.state.loginToken === "") {
       this.$router.push({name: 'login'});
       return
     }

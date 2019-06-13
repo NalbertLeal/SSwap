@@ -161,6 +161,8 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Buttom from '../components/Buttom';
 
+import cache from '../scripts/cache'
+
 export default {
   name: 'login',
   components: {
@@ -203,7 +205,7 @@ export default {
     }
   },
   async created() {
-    if(!this.$store.state.loggedIn || !this.$store.state.loginToken === "") {
+    if(this.$store.state.loggingFail || this.$store.state.loginToken === "") {
       this.$router.push({name: 'login'});
       return
     }

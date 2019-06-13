@@ -1,9 +1,9 @@
 <template lang="pug">
   #menu-nav-top
-    img(class="menu-logo" src="../assets/imgs/SSWAP-branco-sem-slog.png")
+    img(class="menu-logo" src="../assets/imgs/SSWAP-branco-sem-slog.png" @click="goHome()")
     SearchInput(class="nav-search-input" v-if="showSearchInput")
-    //- router-link(class="signin-signup" to="/login") SIGNIN/SIGNUP 
-    Buttom(:classes="'botao-signin-signup'" value="LOGIN / SIGN UP" :clickEvent="openLoginScreen")
+    Buttom(v-if="this.$store.state.loginToken == ''" :classes="'botao-signin-signup'" value="LOGIN / SIGN UP" :clickEvent="openLoginScreen")
+    p(class='logout' v-if="this.$store.state.loginToken != ''" @click="userLogout()") LOGOUT
     font-awesome-icon(class='icon-menu-bars' :icon=['fas', 'bars'] @click="openLoginScreen()")
 </template>
 
@@ -29,6 +29,7 @@
     // background: url("../assets/imgs/SSWAP-branco-sem-slog.png") 100%;
     background-size: cover;
     background-repeat: no-repeat;
+    cursor: pointer;
     height: auto;
     width: 8rem;
   }
@@ -46,6 +47,11 @@
     }
   }
 
+  > .logout {
+    color: #fff;
+    cursor: pointer;
+  }
+
   > .icon-menu-bars {
     color: #fff;
     font-size: 1.5rem;
@@ -61,6 +67,8 @@
 import SearchInput from "./SearchInput.vue";
 import Buttom from "./Buttom.vue";
 
+import Logout from '../scripts/api/logout'
+
 export default {
   components: {
     SearchInput,
@@ -75,6 +83,14 @@ export default {
     openLoginScreen() {
       this.$router.push({ name: 'login'})
       // this.router.push({ name: 'user', params: { userId: '123' } })
+    },
+    async userLogout() {
+      this.$store.commit('logout')
+      this.$router.push({name: "home"})
+      await Logout(this.$store.state.loginToken)
+    },
+    goHome() {
+      this.$router.push({name: "home"})
     }
   },
   async mounted() {

@@ -1,6 +1,6 @@
 import axios from "axios"
 
-async function signup(email, password) {
+async function login(email, password) {
   let response = await axios.post('/api/users/register', 
     {
       username: email,
@@ -10,4 +10,4 @@ async function signup(email, password) {
   return response
 }
 
-export default signup
+export default login

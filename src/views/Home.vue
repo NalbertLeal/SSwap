@@ -123,6 +123,8 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import SearchInput from '../components/SearchInput';
 
+import cache from '../scripts/cache'
+
 export default {
   name: 'home',
   components: {

@@ -164,6 +164,7 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Buttom from '../components/Buttom';
 
+import cache from '../scripts/cache'
 import login from '../scripts/api/login.js'
 import signup from '../scripts/api/signup.js'
 
@@ -190,20 +191,20 @@ export default {
         this.passwordSignupType = "text"
     },
     async loginUser() {
-      let email = document.getElementById("email-login").value,
-        password = document.getElementById("password-login").value;
-        // regexEmail = /^[a-zA-Z\_\.]+\@[a-zA-Z]+\.[a-zA-Z\_\.]+/g;
+      let email = document.getElementById("email-login").value.replace(this.$store.state.regexWhiteSpace, "")
+      let password = document.getElementById("password-login").value.replace(this.$store.state.regexWhiteSpace, "")
+      let isEmailValid = (email === "" || !this.$store.state.regexEmail.exec(email))
+      let isPasswordValid = (password === "" || this.$store.state.regexNotSqlInjection.exec(password))
 
-      if((email === "" || !this.$store.state.regexEmail.exec(email)) 
-        || (password === "" || this.$store.state.regexNotSqlInjection.exec(password))) 
-      {
+      if(isEmailValid || isPasswordValid) {
         this.$store.commit("logginFailed")
         return
       }
+
       let response;
       try {
         response = await login(email, password)
-        this.$store.commit("logginFailed", response.data.token)
+        this.$store.commit("storeToken", response.data.accessToken)
         this.$store.commit("logginSuccess")
         this.$router.push({name: 'profile'})
       }
@@ -212,17 +213,18 @@ export default {
       }
     },
     async signupUser() {
-      let email = document.getElementById("email-signup").value,
-        password = document.getElementById("password-signup-input").value,
-        passwordConfirmation = document.getElementById("password-confirmation-signup-input").value;
+      let email = document.getElementById("email-signup").value.replace(this.$store.state.regexWhiteSpace, "")
+      let password = document.getElementById("password-signup-input").value.replace(this.$store.state.regexWhiteSpace, "")
+      let passwordConfirmation = document.getElementById("password-confirmation-signup-input").value.replace(this.$store.state.regexWhiteSpace, "")
 
-      if(email === "" || !this.$store.state.regexEmail.exec(email)) {
+      let isEmailValid = (email === "" || !this.$store.state.regexEmail.exec(email))
+      let passwordWithSqlInjection = this.$store.state.regexNotSqlInjection.exec(password)
+      let passwordsNotEmpty = (password === "" || passwordConfirmation === "")
+      let isSignupInvalid = isEmailValid || (passwordWithSqlInjection && passwordsNotEmpty)
+
+      if(isSignupInvalid) {
         this.$store.commit("signupFailed")
         return 
-      }
-      if(this.$store.state.regexNotSqlInjection.exec(password) || (password === "" || passwordConfirmation === "")) {
-        this.$store.commit("signupFailed")
-        return
       }
 
       try {
@@ -231,6 +233,11 @@ export default {
       catch(err) {
         this.$store.commit("signupFailed")
       }
+    }
+  },
+  async created() {
+    if(this.$store.state.accessToken !== "") {
+      this.$route.push({name: "profile"})
     }
   }
 }

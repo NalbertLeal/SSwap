@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import Profile from './views/Profile.vue'
 import Offer from './views/Offer.vue'
-import Erro from './views/Profile.vue'
+import Erro from './views/Erro.vue'
 
 Vue.use(Router)
 
